@@ -1,4 +1,7 @@
 from django.db import models
+from django.utils import timezone
+import datetime
+
 """Эта часть кода указывает Джанго на то, чтобы он:
     Создал структуру базы данных (create table) для application
     Создать Python API для доступа к данным объектов Question and Choice."""
@@ -8,6 +11,10 @@ class Question(models.Model):
     pub_date = models.DateTimeField('date published')  # Поле даты (публикации)
     # В поле pub_date использован необязательный аргумент для определения отображаемого названия поля
     # Если этот аргумент не указан, джанго будет использовать "машинное" название (pub_date)
+    def was_published_recently(self):
+        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+
+
     def __str__(self):
         return self.question_text
 # Каждое поле представлено экземпляром класса Field - текст, дата. Так мы указываем какие типы данных хранят поля
